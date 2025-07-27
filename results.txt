@@ -1,0 +1,41 @@
+Mars Rover Energy Simulation Started
+Use the GUI to configure parameters and run simulations
+======================================================
+Generated Emergency Mission with 5 tasks
+Running mission simulation...
+Task prioritization (lower score = higher priority):
+  T002: priority=-1995.102 (energy=0.003, urgency=7.9, reward=11.8)
+  T004: priority=-158.671 (energy=0.020, urgency=9.2, reward=5.8)
+  T003: priority=-107.438 (energy=0.020, urgency=9.7, reward=3.9)
+  T005: priority=-38.809 (energy=0.100, urgency=7.6, reward=5.6)
+  T001: priority=-22.380 (energy=0.300, urgency=9.6, reward=5.9)
+Debug: RTG Energy: 1.540 kWh, Battery: 1.272 kWh (SoC: 100.0%), Usable: 0.674 kWh
+Mission simulation completed successfully.
+Running prioritization comparison...
+Running energy-constrained comparison (17.1% battery, need 0.512 kWh)...
+Running without prioritization (original task order)...
+Debug: RTG Energy: 1.540 kWh, Battery: 0.217 kWh (SoC: 17.1%), Usable: 0.000 kWh
+Task T001 skipped due to insufficient energy
+Task T002 skipped due to insufficient energy
+Task T003 skipped due to insufficient energy
+Task T004 skipped due to insufficient energy
+Task T005 skipped due to insufficient energy
+Running with smart prioritization...
+Task prioritization (lower score = higher priority):
+  T002: priority=-1995.102 (energy=0.003, urgency=7.9, reward=11.8)
+  T004: priority=-158.671 (energy=0.020, urgency=9.2, reward=5.8)
+  T003: priority=-107.438 (energy=0.020, urgency=9.7, reward=3.9)
+  T005: priority=-38.809 (energy=0.100, urgency=7.6, reward=5.6)
+  T001: priority=-22.380 (energy=0.300, urgency=9.6, reward=5.9)
+Debug: RTG Energy: 1.540 kWh, Battery: 0.217 kWh (SoC: 17.1%), Usable: 0.000 kWh
+Task T002 skipped due to insufficient energy
+Task T004 skipped due to insufficient energy
+Task T003 skipped due to insufficient energy
+Task T005 skipped due to insufficient energy
+Task T001 skipped due to insufficient energy
+Comparison Results:
+  Without prioritization: 0 tasks, 0.069 kWh, 0.0 total reward
+  With prioritization: 0 tasks, 0.069 kWh, 0.0 total reward
+  Improvements: +0.0% completion, 0.000 kWh saved, +0.0 reward
+Prioritization comparison completed successfully.
+>> 

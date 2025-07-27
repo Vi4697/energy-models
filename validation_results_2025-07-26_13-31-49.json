@@ -1,0 +1,110 @@
+{
+  "configuration": {
+    "num_trials": 1000,
+    "valid_trials": 1000
+  },
+  "summary_statistics": {
+    "FIFO": {
+      "mean_completion": 40.10104937379143,
+      "mean_efficiency": 113.45094336745822,
+      "mean_reward": 402.2486332076662,
+      "std_completion": 9.383095834876878,
+      "std_efficiency": 68.67579632363086,
+      "std_reward": 141.19481585771734
+    },
+    "EnergyGreedy": {
+      "mean_completion": 58.53031836608375,
+      "mean_efficiency": 174.39340488267567,
+      "mean_reward": 587.7752324307207,
+      "std_completion": 5.781823087530955,
+      "std_efficiency": 94.60260155559922,
+      "std_reward": 174.1124145636792
+    },
+    "UrgencyFirst": {
+      "mean_completion": 39.971684507416875,
+      "mean_efficiency": 113.50270097780344,
+      "mean_reward": 402.9553767950845,
+      "std_completion": 9.711626957082201,
+      "std_efficiency": 69.331079560414,
+      "std_reward": 147.7695782402808
+    },
+    "Random": {
+      "mean_completion": 39.812894490745045,
+      "mean_efficiency": 111.23457708226789,
+      "mean_reward": 395.47942921831213,
+      "std_completion": 9.153202216972218,
+      "std_efficiency": 64.8121341266758,
+      "std_reward": 135.98822303359913
+    },
+    "WSPT": {
+      "mean_completion": 48.62514031944036,
+      "mean_efficiency": 169.93385479864997,
+      "mean_reward": 600.3207693579037,
+      "std_completion": 7.830455337190522,
+      "std_efficiency": 91.55545939963685,
+      "std_reward": 169.3734212315585
+    },
+    "OurAlgorithm": {
+      "mean_completion": 48.1344218802092,
+      "mean_efficiency": 178.51690580133604,
+      "mean_reward": 629.0698802655114,
+      "std_completion": 8.854626755739432,
+      "std_efficiency": 98.14423159604485,
+      "std_reward": 180.7932407725087
+    }
+  },
+  "improvements_over_fifo": {
+    "EnergyGreedy": {
+      "completion_improvement": 18.429268992292315,
+      "efficiency_improvement": 60.942461515217445,
+      "reward_improvement": 185.52659922305452
+    },
+    "UrgencyFirst": {
+      "completion_improvement": -0.12936486637455857,
+      "efficiency_improvement": 0.05175761034521997,
+      "reward_improvement": 0.7067435874182593
+    },
+    "Random": {
+      "completion_improvement": -0.2881548830463885,
+      "efficiency_improvement": -2.2163662851903325,
+      "reward_improvement": -6.769203989354082
+    },
+    "WSPT": {
+      "completion_improvement": 8.524090945648929,
+      "efficiency_improvement": 56.48291143119175,
+      "reward_improvement": 198.0721361502375
+    },
+    "OurAlgorithm": {
+      "completion_improvement": 8.03337250641777,
+      "efficiency_improvement": 65.06596243387781,
+      "reward_improvement": 226.8212470578452
+    }
+  },
+  "effect_sizes": {
+    "EnergyGreedy": {
+      "completion_cohens_d": 2.364749145429904,
+      "efficiency_cohens_d": 0.7372486869454599,
+      "reward_cohens_d": 1.1704378471238461
+    },
+    "UrgencyFirst": {
+      "completion_cohens_d": -0.0135477979447915,
+      "efficiency_cohens_d": 0.0007500644671106831,
+      "reward_cohens_d": 0.004890296071734755
+    },
+    "Random": {
+      "completion_cohens_d": -0.031088486283410016,
+      "efficiency_cohens_d": -0.03319309064860111,
+      "reward_cohens_d": -0.048834229684989496
+    },
+    "WSPT": {
+      "completion_cohens_d": 0.9863886680510728,
+      "efficiency_cohens_d": 0.6979380269497361,
+      "reward_cohens_d": 1.2703284533483876
+    },
+    "OurAlgorithm": {
+      "completion_cohens_d": 0.88059262672931,
+      "efficiency_cohens_d": 0.7681804604882322,
+      "reward_cohens_d": 1.3983450424968553
+    }
+  }
+}

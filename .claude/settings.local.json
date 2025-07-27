@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(matlab:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "mcp__ide__executeCode",
+      "Bash(python:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

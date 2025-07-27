@@ -1,0 +1,314 @@
+Here is a clean and **structured real-world data description** you can give to Claude (or any coding LLM) as **context for writing simulations** that model energy use and task prioritization for the Perseverance Mars Rover.
+
+---
+
+## ✅ **Real-World Data Description for Mars Rover Energy Simulation (Perseverance)**
+
+This data is based on **actual specifications and operational behavior** of the NASA Perseverance rover. Use it to simulate **energy-aware task scheduling** and rover behavior per sol (Martian day = 24.6 hours).
+
+---
+
+### 🔋 **Power System Overview**
+
+* **Primary Power Source:**
+  Multi-Mission Radioisotope Thermoelectric Generator (MMRTG)
+
+  * Output: \~110 W continuous
+  * Daily energy yield: \~2.5 kWh (2500 Wh)
+  * Declines \~1–2% per year (optional modeling detail)
+
+* **Battery System:**
+  2 × Li-Ion batteries
+
+  * Capacity: \~43 Ah each @ 28V ≈ 2.4 kWh total
+  * Usable depth of discharge: 53%
+  * Effective usable energy per sol from battery: \~1.3 kWh
+  * Batteries are recharged gradually during low-load periods (especially at night)
+
+* **Max Peak Power Output:**
+  \~900 W (from combined RTG + battery surge)
+
+* **Typical Start-of-Sol Battery Charge:**
+  \~90–100% SoC at wake-up
+
+  * Assumes full recharge during overnight RTG charging
+
+---
+
+### 🛠️ **Typical Task Energy Consumption**
+
+Each task below is atomic and has an **estimated energy cost** (in Wh):
+
+| Task Type                 | Description / Notes                                 | Avg Power (W)   | Duration | Total Energy (Wh) |
+| ------------------------- | --------------------------------------------------- | --------------- | -------- | ----------------- |
+| **Drive 50m**             | Average terrain, low slope                          | \~150           | \~2 hrs  | \~300             |
+| **Mastcam-Z Imaging**     | Panorama, \~30–50 photos                            | \~20            | 10 min   | \~3               |
+| **SuperCam Laser Zap**    | Rock chemistry, 1 target                            | \~50–80 (burst) | \~5 min  | \~5               |
+| **Deploy Arm**            | Move to science target                              | \~30            | \~2 min  | \~1               |
+| **PIXL/SHERLOC Analysis** | Contact science scan                                | \~80            | 1 hr     | \~80              |
+| **Drilling Rock Core**    | Percussive drill, collect sample                    | \~600 (peak)    | \~10 min | \~100             |
+| **Sample Handling**       | Sealing tube, internal manipulation                 | \~30–50         | 30 min   | \~25              |
+| **MOXIE Oxygen Run**      | High-power gas processing unit                      | \~300           | 1 hr     | \~300             |
+| **Weather Sensor (MEDA)** | 1 full reading with heaters (wind, temp, radiation) | \~15–20         | 15 min   | \~5               |
+| **UHF Data Transmission** | Send \~100–150MB to orbiter                         | \~15            | 10 min   | \~2–3             |
+| **Idle Operation**        | Background power (thermal, CPU, avionics)           | \~40            | 24 hrs   | \~960             |
+
+---
+
+### 📆 **Example Sol Schedule**
+
+```json
+{
+  "sol": 500,
+  "battery_start_soc": 95,
+  "tasks": [
+    {
+      "name": "morning_wakeup",
+      "time": "08:00",
+      "energy_wh": 20
+    },
+    {
+      "name": "uplink_commands",
+      "time": "08:15",
+      "energy_wh": 5
+    },
+    {
+      "name": "drive_to_outcrop",
+      "time": "10:00",
+      "energy_wh": 300
+    },
+    {
+      "name": "mastcam_panorama",
+      "time": "12:00",
+      "energy_wh": 3
+    },
+    {
+      "name": "supercam_laser_rock_a",
+      "time": "12:20",
+      "energy_wh": 5
+    },
+    {
+      "name": "pixl_analysis_rock_b",
+      "time": "13:00",
+      "energy_wh": 80
+    },
+    {
+      "name": "weather_reading",
+      "time": "14:30",
+      "energy_wh": 5
+    },
+    {
+      "name": "data_downlink",
+      "time": "15:00",
+      "energy_wh": 3
+    },
+    {
+      "name": "idle_and_battery_recharge",
+      "time": "16:00–24:00",
+      "net_energy_gain_wh": 700
+    }
+  ]
+}
+```
+
+---
+
+### ⚠️ **Constraints and Notes for Simulation**
+
+* ⚡ Do **not** discharge battery below 47% SoC. Warn or stop.
+* 🌗 At night (e.g., 20:00–06:00), battery recharges at **\~70–80 W** net.
+* 🎯 Tasks like **MOXIE**, **drilling**, and **PIXL** should not occur together in same sol unless low driving load.
+* ⏲️ Sol duration: **24.6 Earth hours**
+* 🧊 Thermal control draws \~40 W continuously – modeled as baseline or overhead
+
+
+......
+
+Perfect. Below is a **clean, structured prompt** you can give to **Claude** (or any advanced LLM coder) to help **review and correct your Python project** and **Matlab simulations** for **realistic task scheduling and energy modeling** for the **Perseverance Mars rover**.
+
+This prompt is focused on ensuring your logic and structure match **real-world constraints**.
+
+---
+
+## 🧠 **Prompt to Claude: Improve Energy Simulation Logic for Mars Rover (Python + MATLAB)**
+
+We are building a simulation system (Python + MATLAB) to model energy-aware task prioritization and scheduling for the NASA **Perseverance Mars rover**. Please analyze and correct the logic and project structure to ensure it reflects real-world energy constraints and rover operations.
+
+---
+
+### 🔧 **Our Current Setup**
+
+* Python: handles task definition, energy tracking, scheduling decisions
+* MATLAB: used for simulation visualizations (e.g., energy vs. time graphs, task timelines)
+
+---
+
+### 🎯 **Goal**
+
+Ensure the task prioritization and energy simulation code matches **realistic rover behavior**, based on actual specifications of the Perseverance rover. We want the simulation to:
+
+* Track battery State of Charge (SoC)
+* Prevent exceeding daily energy budget
+* Schedule tasks based on available energy
+* Recharge batteries overnight using MMRTG
+
+---
+
+### ✅ **Key Real-World Constraints to Enforce in Code**
+
+#### 🔋 Rover Power System (Perseverance)
+
+* **Power Source**: Multi-Mission RTG
+* **Continuous Power Output**: \~110 W
+* **Daily Energy Budget**: \~2.5 kWh (2500 Wh per sol)
+* **Battery System**:
+
+  * Total capacity: \~2.4 kWh
+  * Usable per sol: \~1.3 kWh (53% DoD)
+  * Start of day SoC: \~90–100%
+  * Recharge overnight at net \~70–80 W (→ \~700 Wh restored overnight)
+
+#### ⚡ Peak & Idle Constraints
+
+* Max instantaneous draw: \~900 W (battery + RTG)
+* Idle load (thermal & CPU baseline): \~40 W (always on)
+* Never allow SoC to drop below \~47% of battery
+
+---
+
+### 📦 **Task Library for Simulation**
+
+Define tasks with the following parameters:
+
+```python
+{
+  "task_id": "drive_50m",
+  "description": "Drive 50 meters",
+  "power_draw": 150,         # in watts
+  "duration": 7200,          # in seconds (2 hours)
+  "total_energy_wh": 300,    # can be derived or predefined
+  "priority": 0.8            # 0 to 1, used in scheduling
+}
+```
+
+Sample task data:
+
+| Task                   | Duration (min) | Power (W) | Energy (Wh) |
+| ---------------------- | -------------- | --------- | ----------- |
+| Drive 50m              | 120            | 150       | 300         |
+| PIXL analysis          | 60             | 80        | 80          |
+| Drill core sample      | 10             | 600       | 100         |
+| MOXIE run              | 60             | 300       | 300         |
+| SuperCam laser zap     | 5              | 60        | 5           |
+| Communication pass     | 10             | 15        | 3           |
+| Mastcam imaging        | 10             | 20        | 3           |
+| Weather reading (MEDA) | 15             | 20        | 5           |
+| Idle baseline          | 1440 (24 h)    | 40        | 960         |
+
+---
+
+### 🧩 **What to Fix or Improve**
+
+Please review our logic and **modify/correct the following**:
+
+1. Ensure tasks are only scheduled if energy is available (from RTG + current SoC)
+2. Do not allow battery SoC to drop below 47%
+3. Model **overnight recharging** (\~700 Wh over 10–12 hours of idle time)
+4. Support task priority (float 0–1) to select most valuable tasks
+5. Prevent overlapping high-load tasks if they exceed RTG + battery peak capacity (\~900 W)
+6. Log total energy used, unused RTG energy, and SoC at end of sol
+7. Visualize energy timeline, task timeline, and SoC over sol
+
+---
+
+
+I’ve reviewed the code structure from your core simulation files. Your Python project already has a modular structure for modeling energy usage (`energy_model.py`), rover parameters (`rover_config.py`), and mission simulation logic (`simulate_mission.py`). It also includes a central execution file (`main.py`).
+
+Now, here’s the **revised and adapted prompt** specifically tailored to your **existing project** so that Claude (or any LLM) can accurately **enhance your logic** to reflect real-world Mars rover behavior:
+
+---
+
+## ✅ Prompt to Claude (Adapted for Your Project)
+
+We are building a Mars rover simulation using Python and MATLAB for energy-aware task scheduling. Our project already contains these key files:
+
+* `models/energy_model.py`: Defines energy consumption and SoC logic
+* `models/rover_config.py`: Stores configuration like energy limits and RTG values
+* `sim/simulate_mission.py`: Schedules and runs task simulations
+* `main.py`: Entry point for running and visualizing simulations
+
+We need your help to review and **correct/improve our logic** so it reflects **real-world rover operations**, specifically based on **NASA’s Perseverance rover**.
+
+---
+
+### 🎯 Project Goals
+
+Our Python simulation must:
+
+* Accurately track battery SoC and energy usage
+* Prevent invalid task execution (e.g., not enough energy)
+* Enforce real rover energy constraints
+* Recharge batteries overnight
+* Support task prioritization and scheduling
+* Integrate with MATLAB visualizations (we handle this part separately)
+
+---
+
+### 🧠 Real-World Constraints to Enforce in Code
+
+#### 🔋 Rover Power System (MMRTG + Battery)
+
+* **RTG output**: \~110 W continuous
+* **Daily energy available**: \~2.5 kWh
+* **Battery capacity**: \~2.4 kWh, but only \~53% usable (\~1.3 kWh)
+* **Battery SoC at sol start**: \~90–100%
+* **Overnight recharge rate**: \~700 Wh (from idle RTG power)
+* **Max instantaneous load**: \~900 W (RTG + battery surge)
+* **Idle consumption**: \~40 W (always active)
+
+---
+
+### 📦 Task Format in Our System
+
+Each task is defined with structure like this (JSON or class instance):
+
+```python
+{
+  "name": "drill_core",
+  "duration_sec": 600,
+  "power_w": 600,
+  "priority": 0.9
+}
+```
+
+> Claude: If the code uses a different structure, adapt this logic to the current data classes.
+
+---
+
+### ✅ What to Improve in Our Code
+
+1. ✅ Validate if **task execution only occurs** when enough energy is available
+2. ✅ Ensure **battery SoC never drops below 47%**
+3. ✅ Implement **overnight recharge model** (\~700 Wh added after each sol)
+4. ✅ Enforce **900 W peak load limit** for overlapping or long tasks
+5. ✅ Add **idle energy usage** per second (40 W baseline)
+6. ✅ Add total SoC tracking per time step
+7. ✅ Allow **priority-based task selection** if full list doesn’t fit
+8. ✅ Improve task scheduler in `simulate_mission.py` to:
+
+   * Defer tasks when needed
+   * Optimize sol energy usage
+   * Log skipped or partially completed tasks
+
+---
+
+### 🧪 Simulation Outcomes We Want
+
+Claude, your logic should ensure:
+
+* Accurate `energy_used`, `battery_soc`, `energy_remaining`
+* Tasks that exceed energy are logged and skipped or rescheduled
+* A complete list of scheduled vs. skipped tasks per sol
+* Energy graphs are valid input for MATLAB visualization (`test_simulation.m`)
+
+
